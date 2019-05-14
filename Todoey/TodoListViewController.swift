@@ -12,8 +12,15 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = ["Go to Skatepark", "Do a disaster", "eat food"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //writing as an if let because if this plist is empty, we would have problems
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
      
     }
     
@@ -65,6 +72,8 @@ class TodoListViewController: UITableViewController {
            
             self.itemArray.append(textField.text!)
             
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
             self.tableView.reloadData()
            
 
@@ -72,6 +81,7 @@ class TodoListViewController: UITableViewController {
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
             textField = alertTextField
+            
             
         }
         
